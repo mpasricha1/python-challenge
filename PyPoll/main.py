@@ -4,8 +4,7 @@ import csv
 import os 
 
 csv_path = os.path.join('Resources', 'election_data.csv')
-date = datetime.now().strftime('%Y-%d-%m')
-logging.basicConfig(filename=('Error_log_' + date + '.txt'),level=logging.INFO)
+logging.basicConfig(filename=('Error_log_' + datetime.now().strftime('%Y-%d-%m') + '.txt'),level=logging.INFO)
 
 def printToScreen(candidateList, totalVotes, winner):
 	print('')
@@ -20,6 +19,13 @@ def printToScreen(candidateList, totalVotes, winner):
 	print('Winner: ' + str(winner))
 	print('---------------------')
 	print('---')
+
+def printError():
+	print('')
+	print('No Data In File')
+	cont = input('Reload file press (y)es to continue: ').lower()
+	if(cont == 'y' or cont == 'yes'):
+		validateAndExecute()
 
 def printToFile(printList, totalVotes, winner):
 	output_file = os.path.join('analysis', 'Election_output.txt')
@@ -75,17 +81,18 @@ def parseFile(csv_path):
 					cList.append(candidate)
 	return cList
 
-try:
-	candidateList = parseFile(csv_path)	
-except Exception as e:
-	print('No Data in File')
-	date = datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-	logging.error(date + ' :: No Data In File')
-else: 
-	totalVotes = findTotalVote(candidateList)
-	candidateList = findPercentageOfVote(candidateList,totalVotes)
-	winner = findWinner(candidateList)
-	printToScreen(candidateList, totalVotes, winner)
-	printToFile(candidateList, totalVotes, winner)
+def validateAndExecute():
+	try:
+		candidateList = parseFile(csv_path)	
+	except Exception as e:
+		logging.error(datetime.now().strftime("%Y-%m-%d-%H:%M:%S") + ' :: No Data In File')
+		printError()
+	else: 
+		totalVotes = findTotalVote(candidateList)
+		candidateList = findPercentageOfVote(candidateList,totalVotes)
+		winner = findWinner(candidateList)
+		printToScreen(candidateList, totalVotes, winner)
+		printToFile(candidateList, totalVotes, winner)
 		
+validateAndExecute()
 
