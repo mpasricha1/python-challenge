@@ -1,12 +1,12 @@
+from datetime import datetime
 import logging 
 import csv 
 import os
-import datetime
+
 
 printList = []
 csv_path = os.path.join('Resources','budget_data.csv')
-date = datetime.datetime.now().strftime('%Y-%d-%m')
-logging.basicConfig(filename=('Error_log_' + date + '.txt'),level=logging.INFO)
+logging.basicConfig(filename=('Error_log_' + datetime.now().strftime('%Y-%d-%m') + '.txt'),level=logging.INFO)
 
 def printToScreen(printList):
 	print('')
@@ -16,8 +16,8 @@ def printToScreen(printList):
 	print('Total Months: ' + str(printList[0]))
 	print('Total Net Profit/Loss:' + str(printList[1]))
 	print('Average Change: ' + str(printList[2]))
-	print('Greatest Increase in Profit: ' + str(printList[3]) + ' ' + str(printList[5]))
-	print('Greatest Descrease In Losses: ' + str(printList[4]) + ' ' + str(printList[6]))
+	print('Greatest Increase in Profit: ' + str(printList[3]) + ' ' + str(printList[4]))
+	print('Greatest Descrease In Losses: ' + str(printList[5]) + ' ' + str(printList[6]))
 
 def printToFile(printList):
 	output_file = os.path.join('analysis', 'budget_output.txt')
@@ -25,6 +25,13 @@ def printToFile(printList):
 		writer = csv.writer(dataFile)
 		writer.writerow(['Total Months', 'Profit/Loss', 'Average Change', 'Greatest Increase Date', 'Greatest Increase', 'Greatest Descrease Date', 'Greatest Decrease'])
 		writer.writerow(printList)
+
+def printError():
+	print('')
+	print('No Data In File')
+	cont = input('Reload file press (y)es to continue: ').lower()
+	if(cont == 'y' or cont == 'yes'):
+		validateAndExecute()
 
 def parseFile(csv_path):
 	totalMonths = 0
@@ -49,12 +56,16 @@ def parseFile(csv_path):
 				greatestDecrease = row[1]
 		printList.extend([totalMonths,netProLoss,avrProLoss,increaseDate,greatestIncrease,decreaseDate,greatestDecrease])
 	return printList
-try:	 
-	printList = parseFile(csv_path)
-except Exception as e:
-		print('No Data in File')
-		date = datetime.datetime.now().strftime("%Y-%m-%d-%d-%H:%M:%S")
-		logging.error(date + ' :: No Data In File')
-else:
-	printToScreen(printList)
-	printToFile(printList)
+
+def validateAndExecute():
+	try:	 
+		printList = parseFile(csv_path)
+	except Exception as e:
+			print('No Data in File')
+			logging.error(datetime.now().strftime("%Y-%m-%d-%d-%H:%M:%S") + ' :: No Data In File')
+			printError()
+	else:
+		printToScreen(printList)
+		printToFile(printList)
+
+validateAndExecute()
