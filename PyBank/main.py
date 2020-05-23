@@ -20,7 +20,7 @@ def printToScreen(printList):
 	print('Greatest Descrease In Losses: ' + str(printList[5]) + ' ' + str(printList[6]))
 
 def printToFile(printList):
-	output_file = os.path.join('analysis', 'budget_output.txt')
+	output_file = os.path.join('analysis', 'budget_output.csv')
 	with open(output_file,'w', newline= '') as dataFile:
 		writer = csv.writer(dataFile)
 		writer.writerow(['Total Months', 'Profit/Loss', 'Average Change', 'Greatest Increase Date', 'Greatest Increase', 'Greatest Descrease Date', 'Greatest Decrease'])
