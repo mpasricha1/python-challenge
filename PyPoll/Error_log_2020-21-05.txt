@@ -1,3 +1,0 @@
-ERROR:root:2020-05-21-20:38:05 :: No Data In File
-ERROR:root:2020-05-21-20:41:33 :: No Data In File
-ERROR:root:2020-05-21-20:41:38 :: No Data In File

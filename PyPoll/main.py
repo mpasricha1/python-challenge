@@ -28,17 +28,18 @@ def printError():
 		validateAndExecute()
 
 def printToFile(printList, totalVotes, winner):
-	output_file = os.path.join('analysis', 'Election_output.txt')
-	with open(output_file,'w', newline='') as dataFile:
-		
-		dataFile.writelines(['Name', 'Vote Count', 'Percentage'])
+	output_file = os.path.join('analysis', 'Election_output.csv')
+	with open(output_file,'w', newline='') as dataFile:	
+		writer = csv.writer(dataFile)
+		writer.writerow(['Name', 'Vote Count', 'Percentage'])
 		for i in printList:
 			wName = i['name']
 			wVotes = i['voteCount']
 			wPcent = i['Percentage']
-			wList = [wName, wVotes,wPcent]
-			dataFile.writelines(str(wList))
-		dataFile.writelines('Winner: ' + winner + ' Total Votes: ' + str(totalVotes))
+			writer.writerow([wName,wVotes,wPcent])
+		writer.writerow('\n')
+		writer.writerow(['Winner', 'Total Votes'])
+		writer.writerow([winner,str(totalVotes)])
 
 def findTotalVote(candidateList):
 	tVotes  = 0
