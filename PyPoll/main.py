@@ -88,7 +88,7 @@ def validateAndExecute():
 	except Exception as e:
 		logging.error(datetime.now().strftime("%Y-%m-%d-%H:%M:%S") + ' :: No Data In File')
 		printError()
-	else: 
+	finally: 
 		totalVotes = findTotalVote(candidateList)
 		candidateList = findPercentageOfVote(candidateList,totalVotes)
 		winner = findWinner(candidateList)

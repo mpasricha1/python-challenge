@@ -64,7 +64,7 @@ def validateAndExecute():
 			print('No Data in File')
 			logging.error(datetime.now().strftime("%Y-%m-%d-%d-%H:%M:%S") + ' :: No Data In File')
 			printError()
-	else:
+	finally:
 		printToScreen(printList)
 		printToFile(printList)
 
